@@ -5,6 +5,7 @@ import { createServer } from "./server";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
+  base: "/vibe-home/", // 👈 Required for GitHub Pages
   server: {
     host: "::",
     port: 8080,
@@ -14,7 +15,7 @@ export default defineConfig(({ mode }) => ({
     },
   },
   build: {
-    outDir: "dist/spa",
+    outDir: "dist/spa", // 👈 Your static site will be built here
   },
   plugins: [react(), expressPlugin()],
   resolve: {
@@ -28,12 +29,10 @@ export default defineConfig(({ mode }) => ({
 function expressPlugin(): Plugin {
   return {
     name: "express-plugin",
-    apply: "serve", // Only apply during development (serve mode)
+    apply: "serve", // Only applies during development
     configureServer(server) {
       const app = createServer();
-
-      // Add Express app as middleware to Vite dev server
-      server.middlewares.use(app);
+      server.middlewares.use(app); // Attach Express middleware
     },
   };
 }
